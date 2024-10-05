@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctorspoint/payment/stripe_chekout_webview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -41,19 +42,30 @@ class _BookingConfirmationDialogState extends State<BookingConfirmationDialog> {
 
   void _bookAppointment() async {
     if (_selectedDate != null) {
+      const stripeCheckoutUrl =
+          'https://buy.stripe.com/test_14k148av7bniaE8dQS';
       try {
-        await FirebaseFirestore.instance.collection('appointments').add({
-          'doctorId': widget.doctorId,
-          'doctorName': widget.doctorName,
-          'date': _selectedDate,
-          'patientId': widget.user.uid,
-          'patientName': widget.user.displayName ?? 'Unknown',
-          'patientEmail': widget.user.email ?? 'Unknown',
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Appointment successfully booked')),
+        // Launch Stripe checkout web view
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                const StripeCheckoutWebView(url: stripeCheckoutUrl),
+          ),
         );
+        if (result == 'success') {
+          await FirebaseFirestore.instance.collection('appointments').add({
+            'doctorId': widget.doctorId,
+            'doctorName': widget.doctorName,
+            'date': _selectedDate,
+            'patientId': widget.user.uid,
+            'patientName': widget.user.displayName ?? 'Unknown',
+            'patientEmail': widget.user.email ?? 'Unknown',
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Appointment successfully booked')),
+          );
+        }
 
         Navigator.of(context).pop();
       } catch (e) {
