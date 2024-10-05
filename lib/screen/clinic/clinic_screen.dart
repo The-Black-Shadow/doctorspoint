@@ -1,5 +1,5 @@
-import 'package:doctorspoint/screen/add_doctor_screen.dart';
-import 'package:doctorspoint/screen/login_screen.dart';
+import 'package:doctorspoint/screen/clinic/add_doctor_screen.dart';
+import 'package:doctorspoint/screen/auth/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,7 +25,7 @@ class _ClinicScreenState extends State<ClinicScreen> {
   void _onSpecialtySelected(String specialty) {
     setState(() {
       _selectedSpecialty = specialty;
-      _selectedIndex = 0; // Go to HomeScreen
+      _selectedIndex = 0; // Go to ClinicDoctorHomeScreen
     });
     Navigator.pop(context); // Close the drawer
   }
@@ -67,7 +67,7 @@ class _ClinicScreenState extends State<ClinicScreen> {
                   onTap: () {
                     setState(() {
                       _selectedSpecialty = specialties[index]['name'];
-                      _selectedIndex = 0; // Go to HomeScreen
+                      _selectedIndex = 0; // Go to ClinicDoctorHomeScreen
                     });
                     Navigator.pop(context); // Close the drawer
                   },
@@ -80,8 +80,8 @@ class _ClinicScreenState extends State<ClinicScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          HomeScreen(specialty: _selectedSpecialty),
-          const AppointmentScreen(),
+          ClinicDoctorHomeScreen(specialty: _selectedSpecialty),
+          const ClinicAppointmentScreen(),
           const AddDoctorScreen(),
         ],
       ),
@@ -108,10 +108,10 @@ class _ClinicScreenState extends State<ClinicScreen> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class ClinicDoctorHomeScreen extends StatelessWidget {
   final String? specialty;
 
-  const HomeScreen({super.key, this.specialty});
+  const ClinicDoctorHomeScreen({super.key, this.specialty});
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +144,8 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class AppointmentScreen extends StatelessWidget {
-  const AppointmentScreen({super.key});
+class ClinicAppointmentScreen extends StatelessWidget {
+  const ClinicAppointmentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
