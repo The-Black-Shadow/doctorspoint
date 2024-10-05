@@ -36,7 +36,7 @@ class PatientAppointmentScheduleScreen extends StatelessWidget {
             final formattedDate = DateFormat.yMMMd().format(date);
 
             return ListTile(
-              title: Text('Appointment with Dr. ${appointment['doctorName']}'),
+              title: Text('Appointment with ${appointment['doctorName']}'),
               subtitle: Text('Date: $formattedDate'),
             );
           },

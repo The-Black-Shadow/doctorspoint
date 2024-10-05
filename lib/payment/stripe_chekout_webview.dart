@@ -72,6 +72,7 @@ class _StripeCheckoutWebViewState extends State<StripeCheckoutWebView> {
       appBar: AppBar(
         title: const Text('Stripe Checkout'),
       ),
+      // ignore: unnecessary_null_comparison
       body: _controller != null // Ensure controller is initialized
           ? WebViewWidget(controller: _controller)
           : const Center(
