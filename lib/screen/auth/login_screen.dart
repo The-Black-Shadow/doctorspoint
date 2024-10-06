@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:doctorspoint/screen/clinic/clinic_screen.dart';
 import 'package:doctorspoint/screen/patient/patient_screen.dart';
 import 'package:doctorspoint/screen/auth/register_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -79,42 +80,60 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
+        backgroundColor: Colors.cyan[100],
         title: const Text('Login'),
       ),
       body: Form(
         key: _formkey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              validator: (value) =>
-                  value!.isEmpty ? 'Please enter your email' : null,
-            ),
-            TextFormField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              validator: (value) =>
-                  value!.isEmpty ? 'Please enter your password' : null,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                login(emailController.text, passwordController.text);
-              },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const RegisterScreen()),
-                );
-              },
-              child: const Text('Don\'t have an account? Register here'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'Hey ! Welcome ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Lottie.asset(
+                'assets/login.json',
+                height: 200,
+                width: 200,
+              ),
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your email' : null,
+              ),
+              TextFormField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your password' : null,
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  login(emailController.text, passwordController.text);
+                },
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterScreen()),
+                  );
+                },
+                child: const Text('Don\'t have an account? Register here'),
+              ),
+            ],
+          ),
         ),
       ),
     );
