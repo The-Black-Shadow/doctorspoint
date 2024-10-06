@@ -83,56 +83,60 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         backgroundColor: Colors.cyan[100],
-        title: const Text('Login'),
+        // title: const Text('Login'),
       ),
       body: Form(
         key: _formkey,
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Hey ! Welcome ',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 40),
+                const Text(
+                  'Hey ! Welcome ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Lottie.asset(
-                'assets/login.json',
-                height: 200,
-                width: 200,
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your email' : null,
-              ),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your password' : null,
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  login(emailController.text, passwordController.text);
-                },
-                child: const Text('Login'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterScreen()),
-                  );
-                },
-                child: const Text('Don\'t have an account? Register here'),
-              ),
-            ],
+                Lottie.asset(
+                  'assets/login.json',
+                  height: 200,
+                  width: 200,
+                ),
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your email' : null,
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your password' : null,
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    login(emailController.text, passwordController.text);
+                  },
+                  child: const Text('Login'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterScreen()),
+                    );
+                  },
+                  child: const Text('Don\'t have an account? Register here'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
