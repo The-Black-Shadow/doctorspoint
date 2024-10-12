@@ -130,12 +130,98 @@ class ClinicDoctorHomeScreen extends StatelessWidget {
 
         final doctors = snapshot.data!.docs;
 
-        return ListView.builder(
+        return GridView.builder(
+          padding: const EdgeInsets.all(10.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Two columns per row
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+            childAspectRatio:
+                0.65, // Adjusted this for better image and text layout
+          ),
           itemCount: doctors.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(doctors[index]['name']),
-              subtitle: Text(doctors[index]['specialty']),
+            final doctor = doctors[index];
+            final imageUrl =
+                doctor['imageUrl']; // Get the image URL from Firestore
+            final name = doctor['name'];
+            final specialty = doctor['specialty'];
+            final qualification =
+                doctor['qualification']; // Get the qualification from Firestore
+
+            return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              elevation: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Image Section
+                  if (imageUrl != null)
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        topRight: Radius.circular(15.0),
+                      ),
+                      child: Image.network(
+                        imageUrl,
+                        height: 150, // Fixed height for the image
+                        width: double.infinity,
+                        fit: BoxFit
+                            .cover, // Ensures the image covers the area proportionally
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) return child;
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.broken_image,
+                            size: 100,
+                            color: Colors.grey,
+                          );
+                        },
+                      ),
+                    ),
+
+                  // Padding for text content
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          specialty,
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          qualification, // Display the qualification
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.blueGrey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
