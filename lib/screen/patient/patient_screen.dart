@@ -33,7 +33,9 @@ class _PatientScreenState extends State<PatientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
+        backgroundColor: Colors.cyan[100],
         title: const Text('Patient'),
         actions: [
           IconButton(
@@ -49,31 +51,93 @@ class _PatientScreenState extends State<PatientScreen> {
         ],
       ),
       drawer: Drawer(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        backgroundColor: Colors.cyan,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30.0),
+            bottomRight: Radius.circular(30.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            // Drawer Header with user info or app logo
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.cyan,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // CircleAvatar(
+                  //   radius: 30,
+                  //   backgroundImage: NetworkImage(
+                  //     FirebaseAuth.instance.currentUser?.photoURL ??
+                  //         'https://via.placeholder.com/150', // Default image
+                  //   ),
+                  // ),
+                  const Icon(Icons.person, color: Colors.white, size: 50),
+                  const SizedBox(height: 10),
+                  Text(
+                    FirebaseAuth.instance.currentUser?.displayName ??
+                        'Patient Email',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    FirebaseAuth.instance.currentUser?.email ??
+                        'patient@example.com',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // List of specialties
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('doctors')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-            final doctors = snapshot.data!.docs;
-            final specialties = doctors
-                .map((doc) => doc['specialty'] as String)
-                .toSet()
-                .toList();
+                  final doctors = snapshot.data!.docs;
+                  final specialties = doctors
+                      .map((doc) => doc['specialty'] as String)
+                      .toSet()
+                      .toList();
 
-            return ListView.builder(
-              itemCount: specialties.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(specialties[index]),
-                  onTap: () {
-                    _onSpecialtySelected(specialties[index]);
-                  },
-                );
-              },
-            );
-          },
+                  return ListView.builder(
+                    itemCount: specialties.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: const Icon(Icons.local_hospital,
+                            color: Colors.blue),
+                        title: Text(
+                          specialties[index],
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        onTap: () {
+                          _onSpecialtySelected(specialties[index]);
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
       body: IndexedStack(
