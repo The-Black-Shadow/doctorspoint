@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctorspoint/screen/auth/forgot_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:doctorspoint/screen/clinic/clinic_screen.dart';
@@ -134,6 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                   child: const Text('Don\'t have an account? Register here'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen()),
+                    );
+                  },
+                  child: const Text('Forgot your password? Click here'),
                 ),
               ],
             ),
